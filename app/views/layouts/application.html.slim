@@ -7,4 +7,36 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    = yield
+    .container-fluid
+      .row-fluid
+        .col-md-12
+          nav.navbar.navbar-default role="navigation"
+            .navbar-header
+              button.navbar-toggle data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+              = link_to 'GC', root_url, class: 'navbar-brand'
+
+            = render 'shared/navigation'
+
+          - if notice
+            .alert.alert-success.alert-dismissable
+              button.close aria-hidden="true" data-dismiss="alert" type="button"
+                | ×
+              h4
+                | Notice!
+              p
+                = notice
+
+          - if alert
+            .alert.alert-danger.alert-dismissable
+              button.close aria-hidden="true" data-dismiss="alert" type="button"
+                | ×
+              h4
+                | Alert!
+              p
+                = alert
+          .row-fluid
+            = yield
