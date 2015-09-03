@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe GadgetsController, type: :controller do
   let(:author) { FactoryGirl.create :user }
+  let(:second_user) { FactoryGirl.create :user }
 
   let(:valid_attributes) do
     { name: 'iPod', description: 'Music listening devise', user_id: author.id,
@@ -159,6 +160,43 @@ describe GadgetsController, type: :controller do
     it 'redirects to the gadgets list' do
       request
       expect(response).to redirect_to(gadgets_url)
+    end
+  end
+
+  describe "GET #search " do
+    let!(:first_gadget) do
+      FactoryGirl.create :gadget,
+        name: 'Iphone', description: 'Bla bla bla', user_id: second_user.id
+    end
+
+    let!(:second_gadget) do
+      FactoryGirl.create :gadget,
+        name: 'Ipad', description: 'Bla tralala', user_id: second_user.id
+    end
+
+    before do
+      allow(controller).to receive(:current_user).and_return(second_user)
+    end
+
+    context 'with existing gadgets' do
+      it 'return all matched gadgets' do
+        get :search, q: 'Ipad'
+        expect(assigns(:gadgets)).to eq([second_gadget])
+      end
+    end
+
+    context 'with unexisting gadgets' do
+      it 'return empty result' do
+        get :search, q: 'iWatch'
+        expect(assigns(:gadgets)).to eq([])
+      end
+    end
+
+    context 'empty param' do
+      it 'return all gadgets' do
+        get :search, q: ''
+        expect(assigns(:gadgets)).to eq([first_gadget, second_gadget])
+      end
     end
   end
 end

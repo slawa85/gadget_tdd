@@ -33,5 +33,9 @@ RSpec.describe GadgetsController, type: :routing do
     it 'routes to #destroy' do
       expect(:delete => '/gadgets/1').to route_to('gadgets#destroy', :id => '1')
     end
+
+    it 'routes to #search' do
+      expect(:get => '/gadgets/search?q=bla').to route_to('gadgets#search', :q => 'bla')
+    end
   end
 end
