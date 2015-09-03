@@ -2,11 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Image, type: :model do
   let(:file) { File.new(Rails.root + 'spec/fixtures/files/chillywilly.jpg') }
-  let(:image) { build :image, image: file }
-
-  it 'has a valid factory' do
-    expect(image).to be_valid
-  end
+  let(:image) { build :image, image: file, gadget_id: 1 }
 
   describe 'valid format' do
     it 'should be valid' do
@@ -26,7 +22,8 @@ RSpec.describe Image, type: :model do
     let(:large_image) do
       FactoryGirl.build(:image, image_file_name: 'same-name.png',
                                             image_file_size: 120.megabytes,
-                                            image_content_type: 'image/png')
+                                            image_content_type: 'image/png',
+                                            gadget_id: 1)
     end
 
     it 'should be invalid image' do
