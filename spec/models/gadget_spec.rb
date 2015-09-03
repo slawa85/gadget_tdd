@@ -55,4 +55,30 @@ RSpec.describe Gadget, type: :model do
       expect(Gadget.get_by(first_user.to_param)).to eq([valid_gadget])
     end
   end
+
+  describe 'image association' do
+    context 'attach image' do
+      let(:file) { File.new(Rails.root + 'spec/fixtures/files/chillywilly.jpg') }
+      let(:image) { FactoryGirl.build :image, image: file, gadget_id: valid_gadget.to_param}
+      before do
+        valid_gadget.images << image
+        valid_gadget.save!
+      end
+
+      it 'should have attached an image' do
+        expect(valid_gadget.images).to_not be_empty
+      end
+    end
+
+    context 'empty image' do
+      before do
+        valid_gadget.images << []
+        valid_gadget.save!
+      end
+
+      it 'doesn\'t have any image' do
+        expect(valid_gadget.images).to be_empty
+      end
+    end
+  end
 end
