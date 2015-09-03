@@ -81,4 +81,21 @@ RSpec.describe Gadget, type: :model do
       end
     end
   end
+
+  describe '#search' do
+    let!(:iPhone) { FactoryGirl.create :gadget, name: 'iPhone', description: 'Bla', user_id: first_user.id }
+    let!(:iPad) { FactoryGirl.create :gadget, name: 'iPad', description: 'Bla Bla blas', user_id: first_user.id }
+
+    context 'not empty search param' do
+      it 'should return iPhone' do
+        expect(subject.class.search 'blas', first_user.id).to eq([iPad])
+      end
+    end
+
+    context 'empty search param' do
+      it 'return all gadgets' do
+        expect(subject.class.search nil, first_user.id).to eq([iPhone, iPad])
+      end
+    end
+  end
 end
