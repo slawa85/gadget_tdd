@@ -45,6 +45,10 @@ class GadgetsController < ApplicationController
     end
   end
 
+  def search
+    @gadgets = Gadget.search(params[:q], current_user.to_param)
+  end
+
   private
 
   def set_gadget
