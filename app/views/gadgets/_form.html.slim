@@ -1,0 +1,27 @@
+= form_for @gadget, html: { multipart: true } do |f|
+  - if @gadget.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@gadget.errors.count, "error")} prohibited this gadget from being saved:"
+      ul
+        - @gadget.errors.full_messages.each do |message|
+          li = message
+  = f.hidden_field :user_id, value: @gadget.new_record? ? current_user.id : @gadget.user_id
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+
+  .form-group
+    = render partial: 'shared/image', collection: @gadget.images
+
+    = f.fields_for :images, @gadget.images.build do | builder |
+      .form-group
+        = builder.label :image
+        = builder.file_field :image
+
+  .form-group
+    = f.label :description
+    = f.text_area :description, size: '30x10', class: 'form-control'
+
+  .form-group
+    = f.submit nil, class: 'btn btn-primary'

@@ -1,2 +1,6 @@
-h1 Gadget#new
-p Find me in app/views/gadget/new.html.slim
+.col-md-8.col-md-offset-2
+  h1 New gadget
+
+  == render 'form'
+
+  = link_to 'Back', gadgets_path

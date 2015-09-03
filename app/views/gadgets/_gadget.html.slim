@@ -1,0 +1,14 @@
+.item.col-xs-4.col-lg-4
+    - unless gadget.images.empty?
+      .gadget
+        = image_tag gadget.images.first.image.url(:thumb)
+    .caption
+      h4.group.inner.list-group-item-heading
+        = link_to gadget.name, gadget
+      p.group.inner.list-group-item-text
+        = gadget.description.truncate(100, separator: '...')
+      - if user_signed_in?
+        .row
+          .col-xs-12.col-md-3 = link_to 'Show', gadget, class: "show_gadget_#{gadget.to_param}"
+          .col-xs-12.col-md-3 = link_to 'Edit', edit_gadget_path(gadget), class: "edit_gadget_#{gadget.to_param}"
+          .col-xs-12.col-md-3 = link_to 'Destroy', gadget, data: {:confirm => 'Are you sure?'}, :method => :delete, class: "delete_gadget_#{gadget.to_param}"
