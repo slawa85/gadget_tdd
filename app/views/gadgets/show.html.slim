@@ -1,2 +1,19 @@
-h1 Gadget#show
-p Find me in app/views/gadget/show.html.slim
+.col-md-8.col-md-offset-2
+  p#notice = notice
+  .row
+    - unless @gadget.images.empty?
+      .col-md-4.column.image-gallery
+        .preview
+          = link_to @gadget.images.first.image.url(:large) do
+              = image_tag @gadget.images.first.image.url(:medium)
+        .thumbs
+          = render partial: 'shared/image', collection: @gadget.images
+    .col-md-8.column
+      p
+        = @gadget.name
+      p
+        = @gadget.description
+
+  = link_to 'Edit', edit_gadget_path(@gadget)
+  '|
+  = link_to 'Back', gadgets_path

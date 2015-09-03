@@ -1,2 +1,9 @@
-h1 Gadget#edit
-p Find me in app/views/gadget/edit.html.slim
+.col-md-8.col-md-offset-2
+  h1 Editing gadget
+
+  == render 'form'
+
+  = link_to 'Show', @gadget
+  '|
+  = link_to 'Back', gadgets_path
+

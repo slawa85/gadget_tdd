@@ -1,5 +1,6 @@
 class GadgetsController < ApplicationController
   before_action :set_gadget, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show, :search]
 
   def index
     @gadgets = Gadget.get_by current_user.to_param
@@ -28,9 +29,20 @@ class GadgetsController < ApplicationController
   end
 
   def update
+    respond_to do |format|
+      if @gadget.update(gadget_params)
+        format.html { redirect_to @gadget, notice: 'Gadget was successfully updated.' }
+      else
+        format.html { render :edit }
+      end
+    end
   end
 
   def destroy
+    @gadget.destroy
+    respond_to do |format|
+      format.html { redirect_to gadgets_url, notice: 'Gadget was successfully destroyed.' }
+    end
   end
 
   private
@@ -40,6 +52,6 @@ class GadgetsController < ApplicationController
   end
 
   def gadget_params
-    params.require(:gadget).permit(:name, :description, :user_id)
+    params.require(:gadget).permit(:name, :description, :user_id, images_attributes: [:image])
   end
 end
