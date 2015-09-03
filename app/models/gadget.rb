@@ -10,4 +10,13 @@ class Gadget < ActiveRecord::Base
   def self.get_by(owner_id)
     owner_id.nil? ? all : where("user_id = #{owner_id}")
   end
+
+  def self.search(search, user_id)
+    if search
+      search_condition = "%#{search}%"
+      where('(name LIKE ? OR description LIKE ?) AND (user_id=?)', search_condition, search_condition, user_id)
+    else
+      where('user_id=?', user_id)
+    end
+  end
 end
