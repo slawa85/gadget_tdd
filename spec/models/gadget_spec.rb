@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Gadget, type: :model do
-  let(:owner) { FactoryGirl.create :user }
+  let(:first_user) { FactoryGirl.create :user }
+  let(:second_user) { FactoryGirl.create :user }
   let(:valid_gadget) do
     FactoryGirl.build :gadget,
       name: 'iPhone', description: 'I don\'t like it',
-      user_id: owner.to_param
+      user_id: first_user.to_param
   end
 
   describe 'validators' do
-    let(:invalid_gadget) { FactoryGirl.build :gadget, name: 'bl', description: 'Funny things', user_id: owner.to_param }
+    let(:invalid_gadget) { FactoryGirl.build :gadget, name: 'bl', description: 'Funny things', user_id: first_user.to_param }
 
     context 'invalid gadget' do
       it 'should be invalid' do
@@ -39,6 +40,19 @@ RSpec.describe Gadget, type: :model do
       it 'should be created successfull' do
         expect(valid_gadget.save!).to be true
       end
+    end
+  end
+
+  describe '#get_by' do
+    before  { valid_gadget.save! }
+    let!(:iPad) do
+      FactoryGirl.create :gadget,
+        name: 'iPad', description: 'I don\'t like it',
+        user_id: second_user.to_param
+    end
+
+    it 'return only iPad' do
+      expect(Gadget.get_by(first_user.to_param)).to eq([valid_gadget])
     end
   end
 end
